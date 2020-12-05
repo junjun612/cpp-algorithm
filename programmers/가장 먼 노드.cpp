@@ -33,7 +33,7 @@ void dfs(int start, const vector<vector<int>>& graph, vector<int>& length_list)
 {
 	for (int i = 0; i < graph[start].size(); ++i)
 	{
-        // 해당 노드에 접근할 수 있는 최소 값인 경우 다시 계산합니다.
+        	// 해당 노드에 접근할 수 있는 최소 값인 경우 다시 계산합니다.
 		int next = graph[start][i];
 		if (length_list[next] <= length_list[start] + 1)
 			continue;
@@ -54,7 +54,7 @@ int solution(int n, vector<vector<int>> edge) {
 		graph[edge[i][1] - 1].push_back(edge[i][0] - 1);
 	}
 
-    // dfs로 돌면서 확인
+    	// dfs로 돌면서 확인
 	vector<int> length_list;
 	for (int i = 0; i < n; ++i)
 		length_list.push_back(n);
@@ -62,7 +62,7 @@ int solution(int n, vector<vector<int>> edge) {
 	length_list[0] = 0;
 	bfs(0, graph, length_list);
 
-    // 몇개가 최대 길이인지 확인후 반환
+    	// 몇개가 최대 길이인지 확인후 반환
 	sort(length_list.begin(), length_list.end(), greater<int>());
 	for (int i = 0; i < length_list.size(); ++i)
 	{
