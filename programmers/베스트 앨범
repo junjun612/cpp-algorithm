@@ -1,0 +1,54 @@
+// https://programmers.co.kr/learn/courses/30/lessons/42579
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+
+using namespace std;
+
+vector<int> solution(vector<string> genres, vector<int> plays) {
+	// 데이터화 합니다.
+	unordered_map<string, vector<pair<int, int>>> song_data;
+	unordered_map<string, int> genre_play_count;
+	for (int i = 0; i < genres.size(); ++i)
+	{
+		song_data[genres[i]].push_back(make_pair(i, plays[i]));
+		genre_play_count[genres[i]] += plays[i];
+	}
+
+	// 장르별 음악 정보에서 정렬합니다.
+	for (auto& iter : song_data)
+	{
+		sort(iter.second.begin(), iter.second.end(), [](pair<int, int>& song1, pair<int, int>& song2) {
+			return song1.second > song2.second;
+		});
+	}
+
+	// vector에 장르별 재생값을 추가한 후, 정렬합니다.
+	vector <pair<string, int>> genre_play_count_vector;
+	genre_play_count_vector.assign(genre_play_count.begin(), genre_play_count.end());
+	sort(genre_play_count_vector.begin(), genre_play_count_vector.end(), [](pair<string, int>& genre1, pair<string, int>& genre2) {
+		return genre1.second > genre2.second;
+	});
+
+	// answer에 출력합니다.
+	vector<int> answer;
+	for (int i = 0; i < genre_play_count_vector.size(); ++i)
+	{
+		if (0 < song_data[genre_play_count_vector[i].first].size())
+			answer.push_back(song_data[genre_play_count_vector[i].first][0].first);
+		
+		if (1 < song_data[genre_play_count_vector[i].first].size())
+			answer.push_back(song_data[genre_play_count_vector[i].first][1].first);
+	}
+
+	return answer;
+}
+
+int main() {
+	vector<int> a = solution({ "classic", "pop", "classic", "classic", "pop" }, {500, 600, 150, 800, 2500});
+	for (auto i : a)
+		cout << i << endl;
+	
+	return 0;
+}
